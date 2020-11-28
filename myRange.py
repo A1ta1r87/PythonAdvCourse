@@ -1,6 +1,6 @@
 class MyRange:
     def __init__(self, *args):
-        flag = [all(self.is_number(i) for i in args)]
+        flag = all((isinstance(i, int)) for i in args)
         if flag:
             self.start = 0
             self.step = 1
@@ -31,18 +31,10 @@ class MyRange:
     def __iter__(self):
         return self
 
-    @staticmethod
-    def is_number(i):
-        try:
-            int(i)
-            return True
-        except ValueError:
-            return False
-.format()
 
 print("This is python range")
 for i in range(1, 10, -2):
     print(i)
 print("This is my range")
-for i in MyRange(10, 2, -2):
+for i in MyRange(10, 22, 2):
     print(i)
