@@ -81,6 +81,12 @@ class NewLibrary(dict):
         for book_id, book in self['Books'].items():
             print(book_id, book)
 
+    def transfer_all_books(self):
+        """Функция, выводящая на экран все книги,
+        кот-ые числятся за библиотекой.
+        """
+        return json.dumps(self.show_all_books())
+
     def show_given_books(self):
         """Функция, выводящая на экран книги,
         выданные читателям.
@@ -149,28 +155,28 @@ book5 = Book(5, 'На игле', 'Ирвин Уэлш', 1993)
 # reader2 = Reader('92', 'Pavel', 'Kinchev')
 # reader1 = Reader('99', 'Oleg', 'Miheev')
 
-# national_library.add_book(book1)
-# national_library.add_book(book2)
-# national_library.add_book(book3)
-# national_library.add_book(book4)
-# national_library.add_book(book5)
+national_library.add_book(book1)
+national_library.add_book(book2)
+national_library.add_book(book3)
+national_library.add_book(book4)
+national_library.add_book(book5)
 # # national_library.delete_book(book3)
 # national_library.give_out_book(book4, reader1)
 # national_library.give_out_book(book3, reader1)
 # national_library.give_out_book(book1, reader1)
 # # print(national_library['Given books'])
 #
-# # print(national_library['Debtors'])
-# # print(national_library.debtors)
-# # national_library.sort_books('year')
-# # national_library.return_book(book3, reader1)
-# # national_library.return_book(book1, reader1)
-# # national_library.return_book(book4, reader1)
-# # print(national_library.debtors)
-# # national_library.show_available_books()
-# # national_library.show_all_books()
-# # national_library.show_checked_out_books()
-# # print(national_library['Debtors'])
+# print(national_library['Debtors'])
+# print(national_library.debtors)
+# national_library.sort_books('year')
+# national_library.return_book(book3, reader1)
+# national_library.return_book(book1, reader1)
+# national_library.return_book(book4, reader1)
+# print(national_library.debtors)
+# national_library.show_available_books()
+# print(national_library['Books'])
+# national_library.show_checked_out_books()
+# print(national_library['Debtors'])
 # national_library.save_data()
 # national_library2.load_data('National Library db.json')
 # print(national_library2)
