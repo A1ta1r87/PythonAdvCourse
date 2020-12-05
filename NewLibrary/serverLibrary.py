@@ -1,7 +1,7 @@
 import socket
 import msg
 
-sizePacket = 5
+
 
 sock = socket.socket()
 sock.bind(('', 1234))
@@ -14,7 +14,10 @@ while i > 0:
             msg.send_msg(conn, 'What do u want?')
             answer = msg.read_msg(conn)
             if answer:
-                print(answer)
+                if answer == 'exit':
+                    msg.send_msg(conn, 'Bye')
+                elif answer == 'show all books':
+                    msg.send_msg(conn, ClassLibraryNew.show_all_books(national_library))
             conn.close()
         except ValueError:
             print("Value problems")
