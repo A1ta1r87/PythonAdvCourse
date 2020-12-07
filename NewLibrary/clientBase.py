@@ -31,8 +31,3 @@ with socket.socket() as client_sock:
                 print(server_msg)
     except TypeError:
         print("Connection failed")
-
-
-
-
-
