@@ -1,0 +1,8 @@
+setup.py
+ClientLibraryPackAlex_P/__init__.py
+ClientLibraryPackAlex_P/clientBase.py
+ClientLibraryPackAlex_P/msg.py
+ClientLibraryPackAlex_P.egg-info/PKG-INFO
+ClientLibraryPackAlex_P.egg-info/SOURCES.txt
+ClientLibraryPackAlex_P.egg-info/dependency_links.txt
+ClientLibraryPackAlex_P.egg-info/top_level.txt
