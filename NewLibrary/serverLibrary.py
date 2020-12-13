@@ -35,8 +35,6 @@ class MyThread(threading.Thread):
                        '"exit" for escape.'
         additional_question = 'What else do u want to do (type "info" for help)?'
         reader_id = None
-
-
         # try:
         msg.send_msg(self.conn, greeting_message)
         while True:
@@ -45,6 +43,7 @@ class MyThread(threading.Thread):
                 break
             else:
                 message = ''
+                data_from_library = None
                 if client_msg == 'exit':
                     msg.send_msg(self.conn, 'Bye')
                     print("Disconnected", self.addr)
@@ -52,20 +51,18 @@ class MyThread(threading.Thread):
                 elif client_msg == 'info':
                     message += help_message
                 elif client_msg == 'all':
-                    data = json.loads(library2.national_library.show_all_books())
-                    for index, value in data.items():
-                        message += f'{index}  {value}\n'
+                    data_from_library = json.loads(library2.national_library.show_all_books())
                 elif client_msg == 'given':
-                    data = json.loads(library2.national_library.show_given_books())
+                    data_from_library = json.loads(library2.national_library.show_given_books())
                 elif client_msg == 'available':
-                    data = json.loads(library2.national_library.show_available_books())
+                    data_from_library = json.loads(library2.national_library.show_available_books())
                 elif client_msg[:-1] == 'sort':
                     condition = client_msg[-1]
                     if condition in ('T', 'A', 'Y'):
                         parameter = 'title' if condition == 'T' else ('author' if condition == 'A' else 'year')
-                        data = json.loads(library2.national_library.sort_books(parameter))
+                        data_from_library = json.loads(library2.national_library.sort_books(parameter))
                     else:
-                        message = 'incorrect parameter'
+                        message += 'Incorrect parameter.\n'
                 elif client_msg == 'take' or client_msg == 'return':
                     if not reader_id:
                         msg.send_msg(self.conn, 'What`s ur reader id?')
@@ -83,22 +80,26 @@ class MyThread(threading.Thread):
                             if client_msg == 'return':
                                 taken_books = library2.national_library['Debtors'][reader_id][2]
                                 if book_id in taken_books:
-                                    message = f'Thx, u successfully return the "{book}", {author}'
+                                    message += f'Thx, u successfully return the "{book}", {author}.\n'
                                     library2.national_library.return_book(reader_id, book_id)
                                 else:
-                                    message = 'There is no such book in your list'
+                                    message += 'There is no such book in your list.\n'
                             else:
                                 if book_id in library2.national_library['Given books'].keys():
-                                    message = 'Sorry, this book was given to another reader'
+                                    message += 'Sorry, this book was given to another reader.\n'
                                 else:
-                                    message = f'You have taken the "{book}", {author}'
+                                    message += f'You have taken the "{book}", {author}. '
                                     library2.national_library.give_out_book(reader_id, book_id)
                         else:
-                            message = 'This book is not in our library.'
+                            message += 'This book is not in our library.\n'
                     else:
-                        message = "There is no reader with such id."
+                        message += "There is no reader with such id.\n"
+                        reader_id = None
                 else:
-                    message = 'unknown command'
+                    message += 'Unknown command.\n'
+                if data_from_library:
+                    for index, value in data_from_library.items():
+                        message += f'{index}  {value}\n'
                 message += additional_question
                 msg.send_msg(self.conn, message)
         conn.close()
