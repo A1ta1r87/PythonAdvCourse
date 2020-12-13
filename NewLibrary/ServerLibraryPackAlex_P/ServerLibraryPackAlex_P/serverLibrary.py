@@ -1,7 +1,7 @@
 import socket
 import threading
 import msg
-import library2
+import library
 
 
 class MyThread(threading.Thread):
@@ -48,44 +48,44 @@ class MyThread(threading.Thread):
                     elif client_msg == 'info':
                         message = help_message
                     elif client_msg == 'all':
-                        message = library2.national_library.show_all_books()
+                        message = library.national_library.show_all_books()
                     elif client_msg == 'given':
-                        message = library2.national_library.show_given_books()
+                        message = library.national_library.show_given_books()
                     elif client_msg == 'available':
-                        message = library2.national_library.show_available_books()
+                        message = library.national_library.show_available_books()
                     elif client_msg[:-1] == 'sort':
                         condition = client_msg[-1]
                         if condition in ('T', 'A', 'Y'):
                             parameter = 'title' if condition == 'T' else ('author' if condition == 'A' else 'year')
-                            message = library2.national_library.sort_books(parameter)
+                            message = library.national_library.sort_books(parameter)
                         else:
                             message = 'incorrect parameter'
                     elif client_msg == 'take' or client_msg == 'return':
                         if not reader_id:
                             msg.send_msg(self.conn, 'What`s ur reader id?')
                             reader_id = int(msg.read_msg(self.conn))
-                        if reader_id in library2.national_library['Readers'].keys():
-                            reader_name = library2.national_library['Readers'][reader_id][0]
+                        if reader_id in library.national_library['Readers'].keys():
+                            reader_name = library.national_library['Readers'][reader_id][0]
                             if client_msg == 'take':
                                 msg.send_msg(self.conn, f'Hello, {reader_name}! What book r u looking for?')
                             else:
                                 msg.send_msg(self.conn, f'Hello, {reader_name}! What book do u want to return?')
                             book_id = int(msg.read_msg(self.conn))
-                            if book_id in library2.national_library['Books'].keys():
-                                book = ', '.join(library2.national_library['Books'][book_id][:2])
+                            if book_id in library.national_library['Books'].keys():
+                                book = ', '.join(library.national_library['Books'][book_id][:2])
                                 if client_msg == 'return':
-                                    taken_books = library2.national_library['Debtors'][reader_id][2]
+                                    taken_books = library.national_library['Debtors'][reader_id][2]
                                     if book_id in taken_books:
                                         message = f'Thx, u successfully return the {book}'
-                                        library2.national_library.return_book(reader_id, book_id)
+                                        library.national_library.return_book(reader_id, book_id)
                                     else:
                                         message = 'There is no such book in your list'
                                 else:
-                                    if book_id in library2.national_library['Given books'].keys():
+                                    if book_id in library.national_library['Given books'].keys():
                                         message = 'Sorry, this book was given to another reader'
                                     else:
                                         message = f'You have taken the {book}.'
-                                        library2.national_library.give_out_book(reader_id, book_id)
+                                        library.national_library.give_out_book(reader_id, book_id)
                             else:
                                 message = 'This book is not in our library.'
                         else:
