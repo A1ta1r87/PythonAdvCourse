@@ -1,8 +1,8 @@
-def read_msg(connection, size_pack=1024, encoding='utf-8'):
+def read_msg(connection, size_pack=1024):
     size_msg = int(connection.recv(10).decode())
     msg = ''
     while size_msg > 0:
-        data = connection.recv(size_pack).decode(encoding=encoding)
+        data = connection.recv(size_pack).decode()
         size_msg -= size_pack
         msg += data
     return msg
@@ -13,5 +13,5 @@ def send_msg(connection, msg):
     connection.send(size_msg.encode())
     connection.send(msg.encode())
     print("message was sent successfully")
-    return True
+
 

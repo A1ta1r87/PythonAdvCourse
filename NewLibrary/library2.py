@@ -84,7 +84,7 @@ class NewLibrary(dict):
         """Функция, возвращающая все книги,
         кот-ые числятся за библиотекой в формате json.
         """
-        all_books = {'Список всех книг в библиотеке': ''}
+        all_books = {'Список всех книг в библиотеке: ': ''}
         for book_id, book in self['Books'].items():
             all_books.update({book_id: book[:3]})
         return json.dumps(all_books)
@@ -93,7 +93,7 @@ class NewLibrary(dict):
         """Функция, возвращающая книги,
         выданные читателям в формате json.
         """
-        given_books = {'Книги, выданные читателям': ''}
+        given_books = {'Книги, выданные читателям: ': ''}
         for book_id, book in self['Given books'].items():
             given_books.update({book_id: book[:3]})
         return json.dumps(given_books)
@@ -101,7 +101,7 @@ class NewLibrary(dict):
     def show_available_books(self):
         """Функция, возвращающая доступные книги в формате json."""
         available_books = set(self['Books']) - set(self['Given books'])
-        available_books_dict = {'Доступные книги': ''}
+        available_books_dict = {'Доступные книги: ': ''}
         for book_id in available_books:
             available_books_dict.update({book_id: self['Books'][book_id][:3]})
         return json.dumps(available_books_dict)
@@ -121,6 +121,18 @@ class NewLibrary(dict):
             return json.dumps(sorted_books)
         else:
             return False
+
+    @classmethod
+    def create_lib_from_data(cls, filename, name=None, address=None):
+        with open(filename, 'r', encoding='utf-8') as file:
+            data = json.load(file)
+        if name:
+            data['Info'][0] = name
+        if address:
+            data['Info'][1] = address
+        new_lib = cls(name, address)
+        new_lib.update(data)
+        return new_lib
 
 
 class Book:
@@ -184,5 +196,10 @@ national_library.add_reader(reader3)
 # print(national_library['Given books'])
 # print(national_library['Debtors'])
 # national_library.save_data()
-# national_library2.load_data('National Library db.json')
+# national_library2.save_data()
+# print(national_library)
 # print(national_library2)
+# lib = NewLibrary.create_lib_from_data('National Library db.json', 'NewAge')
+# print(type(lib))
+# lib2 = NewLibrary.create_lib_from_data('Library db.json', 'Age', 'Odessa')
+# print(type(lib2))
