@@ -101,7 +101,7 @@ class MyThread(threading.Thread):
                     for index, value in data_from_library.items():
                         message += f'{index}  {value}\n'
                 message += additional_question
-                msg.send_msg(self.conn, message)
+                msg.send_msg(self.conn, message, encoding='866')
         conn.close()
         # except ValueError:
         #     print("Value problems")
