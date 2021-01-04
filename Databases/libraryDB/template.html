@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="google" value="notranslate">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>Library</title>
+</head>
+
+
+<body>
+    <table>
+            <tr>
+                <td><center><b>Title</b></center></td>
+                <td><center><b>Author</b></center></td>
+                <td><center><b>Year</b></center></td>
+                <td><center><b>Reader_name</b></center></td>
+            </tr>
+            {% for book in books.values() %}
+                <tr>
+                    <td>{{book[0]}}</td>
+                    <td>{{book[1]}}</td>
+                    <td><center>{{book[2]}}</center></td>
+                    <td>{{book[4]}}</td>
+                </tr>
+            {% endfor %}
+
+        </table>
+</body>
+
+<style>
+    table{
+        margin-left: 50vw;
+        transform: translateX(-50%);
+    }
+    tr{
+        width: 100%;
+        height: auto;
+    }
+    td{
+        height: 20px;
+        width: 150px;
+        border: 1px solid #000000;
+    }
+</style>
+</html>
