@@ -12,17 +12,19 @@
 <body>
     <table>
             <tr>
+                <td><center><b>Id</b></center></td>
                 <td><center><b>Title</b></center></td>
                 <td><center><b>Author</b></center></td>
                 <td><center><b>Year</b></center></td>
                 <td><center><b>Reader_name</b></center></td>
             </tr>
-            {% for book in books.values() %}
+            {% for i, book in books.items() %}
                 <tr>
-                    <td>{{book[0]}}</td>
-                    <td>{{book[1]}}</td>
-                    <td><center>{{book[2]}}</center></td>
-                    <td>{{book[4]}}</td>
+                    <td>{{i}}</td>
+                    <td>{{book.title}}</td>
+                    <td>{{book.author}}</td>
+                    <td><center>{{book.year}}</center></td>
+                    <td>{{book.reader_field()}}</td>
                 </tr>
             {% endfor %}
 

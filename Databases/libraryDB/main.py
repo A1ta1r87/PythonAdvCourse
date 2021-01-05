@@ -10,7 +10,7 @@ app.config['DEBUG'] = True
 
 # Создаем библиотеку
 lib = Library('National Library', 'Kyiv')
-
+#
 # lib.add_book(Book('A Byte of Python', 'Swaroop Chitlur', 2003))
 # lib.add_book(Book('Лёгкий способ выучить Python', 'Зед Шоу', 2010))
 # lib.add_book(Book('Python. Карманный справочник', 'Марк Лутц', 1999))
@@ -48,16 +48,36 @@ def api_delete_book():
         return f'Error: No id field provided, please specify an id.'
     return lib.delete_book(id)
 
+@app.route('/api/books/add', methods=['GET'])
+def api_add_book():
+    if 'title' and 'author' and 'year' in flask.request.args:
+        title = flask.request.args['title']
+        author = flask.request.args['author']
+        year = int(flask.request.args['year'])
+    else:
+        return f'Error: No some field provided, please specify all "title" & "author" & "year" fields.'
+    return lib.add_book(Book(title=title, author=author, year=year))
+
 @app.route('/api/books', methods=['GET'])
 def api_sort_books():
     if 'sort' in flask.request.args:
         condition = flask.request.args['sort']
     else:
-        return f'Error: No sort field provided, please specify the sort condition.'
+        return 'Error: No sort field provided, please specify the sort condition.'
     books = lib.sort_books(condition)
     if not books:
         return 'Incorrect parameter'
     return t_books.render(books=books)
+
+@app.route('/api/books/take', methods=['GET'])
+def api_give_book():
+    if not 'reader_id' in flask.request.args:
+        return 'Error: No <b>id_reader</b> field provided, please specify an <b>id_reader</b>.'
+    if not 'book_id' in flask.request.args:
+        return 'Error: No <b>book_id</b> field provided, please specify an <b>book_id</b>.'
+    reader_id = int(flask.request.args['reader_id'])
+    book_id = int(flask.request.args['book_id'])
+    return lib.give_book(reader_id=reader_id, book_id=book_id)
 
 @app.route('/', methods=['GET'])
 def home_page():
@@ -65,4 +85,7 @@ def home_page():
 
 
 if __name__ == "__main__":
+    # print(lib['Books'])
+    # for i, b in lib['Books'].items():
+    #     print(i, b.get_fullname())
     app.run()

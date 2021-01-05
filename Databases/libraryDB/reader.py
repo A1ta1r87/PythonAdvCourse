@@ -16,8 +16,8 @@ class Reader(Base):
     birth_year = Column(Integer)
     is_debtor = Column(Boolean)
 
-    def get_params_reader(self):
-        return [self.name, self.surname, self.birth_year, self.is_debtor]
+    def get_fullname(self):
+        return f'{self.name} {self.surname}'
 
     def __repr__(self):
-        return f'Reader: {self.id:^5}{self.name:<20}{self.surname:<20}{self.birth_year:<5}'
+        return f'{self.get_fullname()} {self.birth_year} {self.is_debtor}'

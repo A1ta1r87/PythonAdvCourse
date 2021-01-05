@@ -22,9 +22,7 @@ class Book(Base):
     reader_id = Column(Integer, ForeignKey('reader.id'), default=None)
 
     reader = relationship("Reader", backref="books")
-
-    def get_params_book(self):
-        return [self.title, self.author, self.year, self.in_stock, f'{self.reader.name} {self.reader.surname}' if self.reader_id != None else 'In stock']
-
+    def reader_field(self):
+        return self.reader.get_fullname() if self.reader_id is not None else "In stock"
     def __repr__(self):
-        return f'Book: {self.id:^5}, {self.title:<50}{self.author:<20}{self.year:<5}'
+        return f'{self.title} {self.author} {self.year} {self.in_stock} {self.reader_field()}'
