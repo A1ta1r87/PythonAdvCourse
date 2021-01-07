@@ -10,7 +10,7 @@ app.config['DEBUG'] = True
 
 # Создаем библиотеку
 lib = Library('National Library', 'Kyiv')
-#
+
 # lib.add_book(Book('A Byte of Python', 'Swaroop Chitlur', 2003))
 # lib.add_book(Book('Лёгкий способ выучить Python', 'Зед Шоу', 2010))
 # lib.add_book(Book('Python. Карманный справочник', 'Марк Лутц', 1999))
@@ -79,13 +79,20 @@ def api_give_book():
     book_id = int(flask.request.args['book_id'])
     return lib.give_book(reader_id=reader_id, book_id=book_id)
 
+@app.route('/api/books/return', methods=['GET'])
+def api_return_book():
+    if not 'reader_id' in flask.request.args:
+        return 'Error: No <b>id_reader</b> field provided, please specify an <b>id_reader</b>.'
+    if not 'book_id' in flask.request.args:
+        return 'Error: No <b>book_id</b> field provided, please specify an <b>book_id</b>.'
+    reader_id = int(flask.request.args['reader_id'])
+    book_id = int(flask.request.args['book_id'])
+    return lib.return_book(reader_id=reader_id, book_id=book_id)
+
 @app.route('/', methods=['GET'])
 def home_page():
     return '<h1>This is Home Page</h1><p>This is a prototype API...</p>'
 
 
 if __name__ == "__main__":
-    # print(lib['Books'])
-    # for i, b in lib['Books'].items():
-    #     print(i, b.get_fullname())
     app.run()

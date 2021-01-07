@@ -38,16 +38,16 @@ class Library(dict):
         """
         self.session.add(book)
         self.session.commit()
+        book = self.session.query(Book).order_by(Book.id.desc()).limit(1).one()
         self['Books'].setdefault(book.id, book)
-
-        return f'The book {book.title} was successfully added.'
+        return f'The book was successfully added.'
 
     def add_reader(self, reader: Reader):
         self.session.add(reader)
         self.session.commit()
+        reader = self.session.query(Reader).order_by(Reader.id.desc()).limit(1).one()
         self['Readers'].setdefault(reader.id, reader)
-
-        return f'The reader {reader.n} was successfully added.'
+        return f'The reader was successfully added.'
 
     def delete_book(self, book_id: int):
         """Функция, удаляющая книгу из библиотеки.
@@ -89,15 +89,44 @@ class Library(dict):
     def give_book(self, reader_id: int, book_id: int):
         if reader_id not in self['Readers'].keys():
             return "There is no reader with such id."
+        reader = self['Readers'][reader_id]
         if book_id not in self['Books'].keys():
             return f'There is no book in our library with id {book_id}.'
-        if not self['Books'][book_id].in_stock:
+        book = self['Books'][book_id]
+        if not book.in_stock:
             return f'This book was given to another reader.'
-        self['Books'][book_id].in_stock = False
-        self['Books'][book_id].reader_id = reader_id
-        self['Readers'][reader_id].is_debtor = True
+        book.in_stock = False
+        book.reader_id = reader.id
+        if not reader.is_debtor:
+            reader.is_debtor = True
+        reader.taken_books.append(book.id)
+        self.session.add_all([book, reader])
+        print(reader)
         self.session.commit()
+        print(reader)
         return 'The book was successfully given!'
+
+    def return_book(self, reader_id: int, book_id: int):
+        if reader_id not in self['Readers'].keys():
+            return "There is no reader with such id."
+        reader = self['Readers'][reader_id]
+        if not reader.is_debtor:
+            return 'You don`t need to return anything.'
+        if book_id not in self['Books'].keys():
+            return f'There is no book in our library with id {book_id}.'
+        book = self['Books'][book_id]
+        if book.in_stock:
+            return f'This book is already in library.'
+        if book.reader_id != reader.id:
+            return 'You don`t take this book'
+        book.in_stock = True
+        book.reader_id = None
+        # taken_books = reader.taken_books.pop(book.id)
+        # if len(taken_books) == 0:
+        #     reader.is_debtor = False
+        self.session.add_all([book, reader])
+        self.session.commit()
+        return 'The book was successfully returned!'
 
     def sort_books(self, condition='title'):
         """Функция, возвращающая книги, отсортированные по указанному параметру в формате json.

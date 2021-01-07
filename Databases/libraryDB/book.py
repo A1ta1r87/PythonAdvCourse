@@ -3,7 +3,6 @@ from sqlalchemy.orm import relationship
 from base_class_sql import Base
 
 
-
 class Book(Base):
     __tablename__ = 'book'
 
@@ -19,10 +18,10 @@ class Book(Base):
     author = Column(String)
     year = Column(Integer)
     in_stock = Column(Boolean)
-    reader_id = Column(Integer, ForeignKey('reader.id'), default=None)
+    reader_id = Column(Integer, default=None)
 
-    reader = relationship("Reader", backref="books")
     def reader_field(self):
         return self.reader.get_fullname() if self.reader_id is not None else "In stock"
+
     def __repr__(self):
-        return f'{self.title} {self.author} {self.year} {self.in_stock} {self.reader_field()}'
+        return f'{self.id} {self.title} {self.author} {self.year} {self.in_stock} {self.reader_field()}'
