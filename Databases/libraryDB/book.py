@@ -18,7 +18,8 @@ class Book(Base):
     author = Column(String)
     year = Column(Integer)
     in_stock = Column(Boolean)
-    reader_id = Column(Integer, default=None)
+    reader_id = Column(Integer, ForeignKey('reader.id'))
+    reader = relationship("Reader", backref="books")
 
     def reader_field(self):
         return self.reader.get_fullname() if self.reader_id is not None else "In stock"

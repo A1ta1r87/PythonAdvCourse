@@ -9,8 +9,8 @@ app = flask.Flask(__name__)
 app.config['DEBUG'] = True
 
 # Создаем библиотеку
-lib = Library('National Library', 'Kyiv')
-
+lib = Library()
+#
 # lib.add_book(Book('A Byte of Python', 'Swaroop Chitlur', 2003))
 # lib.add_book(Book('Лёгкий способ выучить Python', 'Зед Шоу', 2010))
 # lib.add_book(Book('Python. Карманный справочник', 'Марк Лутц', 1999))
@@ -26,72 +26,128 @@ e = Environment(
     loader=FileSystemLoader('.'),
     autoescape=select_autoescape(['html'])
 )
-t_books = e.get_template('template.html')
 
-@app.route('/api/books/all', methods=['GET'])
-def api_get_all_book():
-    return t_books.render(books=lib.get_all_books())
+def is_number(x):
+    try:
+        int(x)
+        return True
+    except ValueError:
+        return False
 
-@app.route('/api/books/given', methods=['GET'])
+
+def get_sort_books(request, needed_books='all'):
+    if 'sort' in request:
+        condition = request['sort']
+        if condition:
+            books = lib.sort_books(condition=condition, needed_books=needed_books)
+            return books
+    return False
+
+
+@app.route('/books', methods=['GET'])
+def api_get_books():
+    sort_books = get_sort_books(flask.request.args, 'all')
+    if sort_books:
+        return flask.render_template('books.html', books=sort_books)
+    return flask.render_template('books.html', path='books', books=lib.get_all_books())
+
+@app.route('/given_books', methods=['GET'])
 def api_get_given_books():
-    return t_books.render(books=lib.get_given_books())
+    sort_books = get_sort_books(flask.request.args, 'given')
+    if sort_books:
+        return flask.render_template('books.html', books=sort_books)
+    return flask.render_template('books.html', path='/given_books', books=lib.get_given_books())
 
-@app.route('/api/books/available', methods=['GET'])
+
+@app.route('/available_books', methods=['GET'])
 def api_get_available_books():
-    return t_books.render(books=lib.get_available_books())
+    sort_books = get_sort_books(flask.request.args, 'available')
+    if sort_books:
+        return flask.render_template('books.html', books=sort_books)
+    return flask.render_template('books.html', path='/available_books', books=lib.get_available_books())
 
-@app.route('/api/books/delete', methods=['GET'])
+
+@app.route('/delete_book', methods=['POST', 'GET'])
 def api_delete_book():
-    if 'id' in flask.request.args:
-        id = int(flask.request.args['id'])
-    else:
-        return f'Error: No id field provided, please specify an id.'
-    return lib.delete_book(id)
+    message = ''
+    if flask.request.method == 'POST':
+        id = flask.request.form['id']
+        if not bool(id and is_number(id)):
+            message = 'Данные указаны неверно'
+        else:
+            message = lib.delete_book(int(id))
+    elif flask.request.method == 'GET':
+        if 'id' in flask.request.args:
+            id = flask.request.args['id']
+            if is_number(id):
+                message = lib.delete_book(int(id))
+    return flask.render_template('delete_book.html', message=message, books=lib.get_all_books())
 
-@app.route('/api/books/add', methods=['GET'])
+
+@app.route('/add_book', methods=['POST', 'GET'])
 def api_add_book():
-    if 'title' and 'author' and 'year' in flask.request.args:
-        title = flask.request.args['title']
-        author = flask.request.args['author']
-        year = int(flask.request.args['year'])
-    else:
-        return f'Error: No some field provided, please specify all "title" & "author" & "year" fields.'
-    return lib.add_book(Book(title=title, author=author, year=year))
+    message = ''
+    if flask.request.method == 'POST':
+        title = flask.request.form['title']
+        author = flask.request.form['author']
+        year = flask.request.form['year']
+        if not (title and author and year and is_number(year)):
+            message = 'Данные указаны неверно'
+        else:
+            message = lib.add_book(Book(title=title, author=author, year=int(year)))
+    elif flask.request.method == 'GET':
+        if 'title' and 'author' and 'year' in flask.request.args:
+            title = flask.request.args['title']
+            author = flask.request.args['author']
+            year = flask.request.args['year']
+            if title and author and year and is_number(year):
+                message = lib.add_book(Book(title=title, author=author, year=year))
+    return flask.render_template('add_book.html', message=message)
 
-@app.route('/api/books', methods=['GET'])
-def api_sort_books():
-    if 'sort' in flask.request.args:
-        condition = flask.request.args['sort']
-    else:
-        return 'Error: No sort field provided, please specify the sort condition.'
-    books = lib.sort_books(condition)
-    if not books:
-        return 'Incorrect parameter'
-    return t_books.render(books=books)
 
-@app.route('/api/books/take', methods=['GET'])
+@app.route('/take_book', methods=['POST', 'GET'])
 def api_give_book():
-    if not 'reader_id' in flask.request.args:
-        return 'Error: No <b>id_reader</b> field provided, please specify an <b>id_reader</b>.'
-    if not 'book_id' in flask.request.args:
-        return 'Error: No <b>book_id</b> field provided, please specify an <b>book_id</b>.'
-    reader_id = int(flask.request.args['reader_id'])
-    book_id = int(flask.request.args['book_id'])
-    return lib.give_book(reader_id=reader_id, book_id=book_id)
+    message = ''
+    if flask.request.method == 'POST':
+        book_id = flask.request.form['book_id']
+        reader_id = flask.request.form['reader_id']
+        if not (book_id and reader_id and is_number(book_id) and is_number(reader_id)):
+            message = 'Данные указаны неверно'
+        else:
+            message = lib.give_book(reader_id=int(reader_id), book_id=int(book_id))
+    elif flask.request.method == 'GET':
+        if ('reader_id' and 'book_id') in flask.request.args:
+            book_id = flask.request.args['book_id']
+            reader_id = flask.request.args['reader_id']
+            if is_number(book_id) and is_number(reader_id):
+                message = lib.give_book(reader_id=int(reader_id), book_id=int(book_id))
+    return flask.render_template('take_book.html', message=message, books=lib.get_available_books())
 
-@app.route('/api/books/return', methods=['GET'])
+
+@app.route('/return_book', methods=['POST', 'GET'])
 def api_return_book():
-    if not 'reader_id' in flask.request.args:
-        return 'Error: No <b>id_reader</b> field provided, please specify an <b>id_reader</b>.'
-    if not 'book_id' in flask.request.args:
-        return 'Error: No <b>book_id</b> field provided, please specify an <b>book_id</b>.'
-    reader_id = int(flask.request.args['reader_id'])
-    book_id = int(flask.request.args['book_id'])
-    return lib.return_book(reader_id=reader_id, book_id=book_id)
+    message = ''
+    if flask.request.method == 'POST':
+        print(flask.request.values)
+        book_id = flask.request.form['book_id']
+        reader_id = flask.request.form['reader_id']
+        if not (book_id and reader_id and is_number(book_id) and is_number(reader_id)):
+            message = 'Данные указаны неверно'
+        else:
+            message = lib.return_book(reader_id=int(reader_id), book_id=int(book_id))
+    elif flask.request.method == 'GET':
+        if ('reader_id' and 'book_id') in flask.request.args:
+            book_id = flask.request.args['book_id']
+            reader_id = flask.request.args['reader_id']
+            if is_number(book_id) and is_number(reader_id):
+                message = lib.return_book(reader_id=int(reader_id), book_id=int(book_id))
+    return flask.render_template('return_book.html', message=message, books=lib.get_given_books())
 
-@app.route('/', methods=['GET'])
+
+@app.route('/index')
+@app.route('/')
 def home_page():
-    return '<h1>This is Home Page</h1><p>This is a prototype API...</p>'
+    return flask.render_template('index.html')
 
 
 if __name__ == "__main__":
