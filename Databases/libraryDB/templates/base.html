@@ -1,0 +1,59 @@
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Библиотека</title>
+    <link href="/static/style.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+    <div id="templatemo_wrapper">
+        <div id="templatemo_menu">
+            <ul>
+                <li><a href="register.html">Регистрация</a></li>
+                <li><a href="auth.html">Авторизация</a></li>
+                <li><a href="contact.html">О нас</a></li>
+            </ul>
+        </div>
+
+        <div id="templatemo_left_column">
+            <div id="templatemo_header">
+                <div id="site_title">
+                    <h1>
+                        <a href="index">
+                            <strong>Онлайн</strong>
+                            <span><b>Библиотека</b></span>
+                        </a>
+                    </h1>
+                </div>
+            </div>
+
+            <div id="templatemo_sidebar">
+                <h4>Категории</h4>
+                <ul class="templatemo_list">
+                    <li><a href="add_book">Добавить книгу</a></li>
+                    <li><a href="delete_book">Удалить книгу</a></li>
+                    <li><a href="take_book">Взять книгу</a></li>
+                    <li><a href="return_book">Вернуть книгу</a></li>
+                    <li class="topmenu"><a href="books" >Книги</a>
+                         <ul class="submenu">
+                            <li><a href="books">Все книги</a></li>
+                            <li><a href="available_books">Доступные книги</a></li>
+                            <li><a href="given_books">Книги, отданные читателям</a></li>
+                          </ul>
+                    </li>
+                </ul>
+
+                <div class="cleaner_h40"></div>
+            </div>
+        </div>
+
+        {% block content %}{% endblock %}
+
+        <div class="cleaner_h20"></div>
+            <div id="templatemo_footer">
+                Copyright &#169; 2021 AlexP
+            </div>
+        <div class="cleaner"></div>
+    </div>
+</body>
+</html>

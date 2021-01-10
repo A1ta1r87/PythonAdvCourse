@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block content %}
+ <div id="templatemo_right_column">
+        <div id="templatemo_main">
+            <div class="cleaner_h10"></div>
+            <h1>Книги библиотеки</h1>
+
+            <div id="contact_form">
+                {% if books %}
+                    <table>
+                        <tr>
+                            <td><center><b><a href="{{path}}?sort=id">Id&#8593;&#8595;</a></b></center></td>
+                            <td><center><b><a href="{{path}}?sort=title">Title&#8593;&#8595;</a></b></center></td>
+                            <td><center><b><a href="{{path}}?sort=author">Author&#8593;&#8595;</a></b></center></td>
+                            <td><center><b><a href="{{path}}?sort=year">Year&#8593;&#8595;</a></b></center></td>
+                            <td><center><b>Reader</b></center></td>
+                        </tr>
+                        {% for i, book in books.items() %}
+                            <tr>
+                                <td>{{i}}</td>
+                                <td>{{book.title}}</td>
+                                <td>{{book.author}}</td>
+                                <td><center>{{book.year}}</center></td>
+                                <td>{{book.reader_field()}}</td>
+                            </tr>
+
+                        {% endfor %}
+                    </table>
+
+                    <div class="cleaner_h10"></div>
+                    <div class="cleaner_h10"></div>
+                {% else %}
+                    <p><b>Книг еще нет.</b></p>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="cleaner"></div>
+    </div>
+{% endblock %}

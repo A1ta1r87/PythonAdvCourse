@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block content %}
+ <div id="templatemo_right_column">
+        <div id="templatemo_main">
+            {% if message %}
+            <p><b>{{ message }}</b></p>
+            {% endif %}
+            <div class="cleaner_h10"></div>
+            <h1>Выдача книг</h1>
+
+            <div id="contact_form">
+                {% if books %}
+                    <form action="" method="post">
+                        <p><b>Какую книгу вы хотите взять?</b></p>
+
+                        <div class="cleaner_h10"></div>
+
+                        <table>
+                            <tr>
+                                <th></th>
+                                <th>Id</th>
+                                <th>Title</th>
+                                <th>Author</th>
+                                <th>Year</th>
+                                <th>Reader</th>
+                            </tr>
+                            {% for i, book in books.items() %}
+                                <tr>
+                                    <td><input id="book" name="book_id" type="radio" value="{{i}}"></td>
+                                    <th><label for="book">{{i}}</label></th>
+                                    <td>{{book.title}}</td>
+                                    <td>{{book.author}}</td>
+                                    <td>{{book.year}}</td>
+                                    <td>{{book.reader_field()}}</td>
+                                </tr>
+                            {% endfor %}
+                        </table>
+
+                        <div class="cleaner_h10"></div>
+
+                        <label for="reader"class="label">Номер читателя:</label>
+                        <input type="text" id="reader" name="reader_id" class="input_field" />
+
+                        <div class="cleaner_h10"></div>
+                        <div class="cleaner_h10"></div>
+
+                        <input type="submit" class="submit_btn" name="submit" id="submit" value="Подтвердить" />
+                    </form>
+                {% else %}
+                    <p><b>Доступных книг нет.</b></p>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="cleaner"></div>
+    </div>
+{% endblock %}
