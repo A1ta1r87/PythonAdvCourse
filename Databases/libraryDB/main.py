@@ -4,7 +4,6 @@ from library import Library
 from book import Book
 from reader import Reader
 
-
 app = flask.Flask(__name__)
 app.config['DEBUG'] = True
 
@@ -27,7 +26,12 @@ e = Environment(
     autoescape=select_autoescape(['html'])
 )
 
+
 def is_number(x):
+    """
+    Вернуть True, если переданный элемент является числом
+    или может быть преобразован в число (например число в виде строки)
+    """
     try:
         int(x)
         return True
@@ -36,6 +40,14 @@ def is_number(x):
 
 
 def get_sort_books(request, needed_books='all'):
+    """
+    Отсортировать книги, если в запросе есть параметр 'sort'.
+    :param request: словарь, содержащий аргументы запроса
+    :param needed_books: книги, кот-ые необходимо отсортировать: 'all' - все книги библиотеки (по умолчанию)
+                                                                 'given' - выданные книги
+                                                                 'available' - доступные книги
+    :return: отсортированный словарь книг
+    """
     if 'sort' in request:
         condition = request['sort']
         if condition:
@@ -50,6 +62,7 @@ def api_get_books():
     if sort_books:
         return flask.render_template('books.html', books=sort_books)
     return flask.render_template('books.html', path='books', books=lib.get_all_books())
+
 
 @app.route('/given_books', methods=['GET'])
 def api_get_given_books():
@@ -96,7 +109,7 @@ def api_add_book():
         else:
             message = lib.add_book(Book(title=title, author=author, year=int(year)))
     elif flask.request.method == 'GET':
-        if 'title' and 'author' and 'year' in flask.request.args:
+        if 'title' in flask.request.args and 'author' in flask.request.args and 'year' in flask.request.args:
             title = flask.request.args['title']
             author = flask.request.args['author']
             year = flask.request.args['year']
@@ -116,7 +129,7 @@ def api_give_book():
         else:
             message = lib.give_book(reader_id=int(reader_id), book_id=int(book_id))
     elif flask.request.method == 'GET':
-        if ('reader_id' and 'book_id') in flask.request.args:
+        if 'reader_id' in flask.request.args and 'book_id' in flask.request.args:
             book_id = flask.request.args['book_id']
             reader_id = flask.request.args['reader_id']
             if is_number(book_id) and is_number(reader_id):
@@ -128,7 +141,6 @@ def api_give_book():
 def api_return_book():
     message = ''
     if flask.request.method == 'POST':
-        print(flask.request.values)
         book_id = flask.request.form['book_id']
         reader_id = flask.request.form['reader_id']
         if not (book_id and reader_id and is_number(book_id) and is_number(reader_id)):
@@ -136,7 +148,7 @@ def api_return_book():
         else:
             message = lib.return_book(reader_id=int(reader_id), book_id=int(book_id))
     elif flask.request.method == 'GET':
-        if ('reader_id' and 'book_id') in flask.request.args:
+        if 'reader_id' in flask.request.args and 'book_id' in flask.request.args:
             book_id = flask.request.args['book_id']
             reader_id = flask.request.args['reader_id']
             if is_number(book_id) and is_number(reader_id):
