@@ -9,14 +9,12 @@ def read_msg(connection, header_size: int = default_header_size, size_pack=1024)
             return False
 
         size_msg = int(data.decode(encoding=encoding))
-        print(size_msg)
         msg = ''
 
         while True:
             if size_msg <= size_pack:
                 data = connection.recv(size_msg).decode(encoding=encoding)
                 if not data:
-                    print("nope")
                     return False
                 msg += data
                 break
