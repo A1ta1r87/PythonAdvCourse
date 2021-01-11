@@ -83,7 +83,6 @@ class Library(dict):
                 или сообщение об ошибке (если книги с таким номером не найдено)
         """
         if book_id in self['Books'].keys():
-            title = self['Books'][book_id].title
             book = self['Books'][book_id]
             # self.session.query(Book).filter(Book.id==book_id).delete()
             self.session.delete(book)
@@ -169,9 +168,13 @@ class Library(dict):
     def sort_books(self, condition='id', needed_books='all'):
         """
         Отсортировать книги по заданному условию.
-        :param condition: 'title' - по названию (параметр по умолчанию)
-                          'author' - по имени автора
-                          'year' - по году издания
+        :param condition:   'id' - по номеру (параметр по умолчанию)
+                            'title' - по названию
+                            'author' - по имени автора
+                            'year' - по году издания
+        :param needed_books: книги, кот-ые необходимо отсортировать: 'all' - все книги библиотеки;
+                                                                     'given' - выданные книги;
+                                                                     'available' - доступные книги
         :return: отсортированный словарь книг, либо False в случае неверно указанных параметров
         """
         if condition in ('id', 'title', 'author', 'year'):
@@ -181,9 +184,9 @@ class Library(dict):
                 books = self.get_available_books().items()
             else:
                 books = self['Books'].items()
-            return dict(sorted(books, key=lambda item: item[1].id if condition == 'id'
-                else (item[1].title if condition == 'title'
-                else (item[1].author if condition == 'author'
-                else item[1].year))))
+            return dict(sorted(books, key=lambda item: item[1].id if condition == 'id' else
+             (item[1].title if condition == 'title' else
+              (item[1].author if condition == 'author' else
+               item[1].year))))
         else:
             return False
