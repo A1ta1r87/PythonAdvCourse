@@ -84,10 +84,10 @@ def api_get_available_books():
 def api_delete_book():
     message = ''
     if flask.request.method == 'POST':
-        id = flask.request.form['id']
-        if not bool(id and is_number(id)):
+        if 'id' not in flask.request.form:
             message = 'Данные указаны неверно'
         else:
+            id = flask.request.form['id']
             message = lib.delete_book(int(id))
     elif flask.request.method == 'GET':
         if 'id' in flask.request.args:
@@ -122,12 +122,15 @@ def api_add_book():
 def api_give_book():
     message = ''
     if flask.request.method == 'POST':
-        book_id = flask.request.form['book_id']
-        reader_id = flask.request.form['reader_id']
-        if not (book_id and reader_id and is_number(book_id) and is_number(reader_id)):
+        if not ('book_id' in flask.request.form and 'reader_id' in flask.request.form):
             message = 'Данные указаны неверно'
         else:
-            message = lib.give_book(reader_id=int(reader_id), book_id=int(book_id))
+            book_id = flask.request.form['book_id']
+            reader_id = flask.request.form['reader_id']
+            if not (book_id and reader_id and is_number(book_id) and is_number(reader_id)):
+                message = 'Данные указаны неверно'
+            else:
+                message = lib.give_book(reader_id=int(reader_id), book_id=int(book_id))
     elif flask.request.method == 'GET':
         if 'reader_id' in flask.request.args and 'book_id' in flask.request.args:
             book_id = flask.request.args['book_id']
@@ -141,12 +144,15 @@ def api_give_book():
 def api_return_book():
     message = ''
     if flask.request.method == 'POST':
-        book_id = flask.request.form['book_id']
-        reader_id = flask.request.form['reader_id']
-        if not (book_id and reader_id and is_number(book_id) and is_number(reader_id)):
+        if not ('book_id' in flask.request.form and 'reader_id' in flask.request.form):
             message = 'Данные указаны неверно'
         else:
-            message = lib.return_book(reader_id=int(reader_id), book_id=int(book_id))
+            book_id = flask.request.form['book_id']
+            reader_id = flask.request.form['reader_id']
+            if not (book_id and reader_id and is_number(book_id) and is_number(reader_id)):
+                message = 'Данные указаны неверно'
+            else:
+                message = lib.return_book(reader_id=int(reader_id), book_id=int(book_id))
     elif flask.request.method == 'GET':
         if 'reader_id' in flask.request.args and 'book_id' in flask.request.args:
             book_id = flask.request.args['book_id']
