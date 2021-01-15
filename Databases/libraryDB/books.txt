@@ -1,0 +1,7 @@
+To Kill a Mockingbird,Harper Lee,2003
+1984,George Orwell,2010
+The Lord of the Rings,J.R.R. Tolkien,1999
+In Search of Lost Time,Marcel Proust,2005
+Ulysses,James Joyce,1993
+Don Quixote,Miguel de Cervantes,1998
+The Great Gatsby,F. Scott Fitzgerald,2006

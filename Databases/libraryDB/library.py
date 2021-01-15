@@ -41,11 +41,13 @@ class Library(dict):
         # create session
         self.session = Session(bind=self.e)
 
-        self.load_data_from_db()
+        # self.load_data_from_db()
 
-    def load_data_from_db(self):
+    def load_data_from_db(self) -> None:
         """
-        Загружает данные библиотеки из бд, заполняя словари 'Readers' и 'Books'
+        Загружает данные библиотеки из бд, заполняя словари 'Readers' и 'Books'.
+
+        :return: None
         """
         for reader in self.session.query(Reader).order_by(Reader.id):
             self['Readers'].setdefault(reader.id, reader)
@@ -60,7 +62,6 @@ class Library(dict):
         """
         self.session.add(book)
         self.session.commit()
-        book = self.session.query(Book).order_by(Book.id.desc()).limit(1).one()
         self['Books'].setdefault(book.id, book)
         return f'Книга "{book.title}" успешно добавлена в библиотеку.'
 
@@ -72,7 +73,6 @@ class Library(dict):
         """
         self.session.add(reader)
         self.session.commit()
-        reader = self.session.query(Reader).order_by(Reader.id.desc()).limit(1).one()
         self['Readers'].setdefault(reader.id, reader)
         return f'Читатель "{reader.get_fullname()}" успешно добавлен в библиотеку.'
 
@@ -133,7 +133,6 @@ class Library(dict):
         book.reader_id = reader.id
         if not reader.is_debtor:
             reader.is_debtor = True
-        self.session.add_all([book, reader])
         self.session.commit()
         return f'Книга "{book.title}" успешно выдана.'
 
