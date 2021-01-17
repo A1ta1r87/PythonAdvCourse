@@ -10,22 +10,23 @@
             <div id="contact_form">
                 <form action="" method="post">
                     <label for="title">Название:</label>
-                    <input type="text" id="title" name="title" class="input_field" />
+                    <input type="text" id="title" name="title" class="input_field" required/>
 
                     <div class="cleaner_h10"></div>
 
                     <label for="author">Автор:</label>
-                    <input type="text" id="author" name="author" class="input_field" />
+                    <input type="text" id="author" name="author" class="input_field" required/>
 
                     <div class="cleaner_h10"></div>
 
                     <label for="year">Год издания:</label>
-                    <input type="text" id="year" name="year" class="input_field" />
+                    <input type="number" id="year" name="year" class="input_field" required/>
 
                     <div class="cleaner_h10"></div>
                     <div class="cleaner_h10"></div>
 
-                    <input type="submit" class="submit_btn" name="submit" id="submit" value="Отправить" />
+                    <input type="submit" class="submit_btn" name="submit" id="submit" value="Добавить" />
+                    <input type="reset" class="submit_btn" name="reset" id="reset" value="Очистить" />
                 </form>
             </div>
         </div>

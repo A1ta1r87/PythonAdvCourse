@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block content %}
+ <div id="templatemo_right_column">
+        <div id="templatemo_main">
+
+            {% if message %}
+                <p><b>{{ message }}</b></p>
+            {% endif %}
+            {% for message in get_flashed_messages() %}
+                <h5>{{ message }}</h5>
+            {% endfor %}
+
+            <h1>Авторизация</h1>
+
+            <div id="contact_form">
+                <form action="" method="post">
+
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" class="input_field" required/>
+
+                    <div class="cleaner_h10"></div>
+
+                    <label for="password">Пароль:</label>
+                    <input type="password" id="password" name="password" class="input_field" required/>
+
+
+                    <div class="cleaner_h10"></div>
+                    <div class="cleaner_h10"></div>
+
+                    <input type="submit" class="submit_btn" name="submit" id="submit" value="Войти" />
+                    <input type="reset" class="submit_btn" name="reset" id="reset" value="Очистить" />
+                </form>
+            </div>
+        </div>
+
+        <div class="cleaner"></div>
+    </div>
+{% endblock %}

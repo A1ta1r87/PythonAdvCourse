@@ -32,6 +32,7 @@ h3 { font-size: 21px; margin: 0 0 20px 0; padding: 0; padding: 0; color: #666666
 h4 { font-size: 18px; margin: 0 0 20px 0; padding: 0; color: #ffa200; }
 h5 { font-size: 16px; margin: 0 0 10px 0; padding: 0; color: #ffa200;}
 h6 { font-size: 14px; margin: 0 0 5px 0; padding: 0; color: #ffa200;}
+h7 { font-size: 16px; margin: 0 0 5px 0; padding: 0; color: #ffa200;}
 
 table {
      border-collapse: collapse; /* Отображать двойные линии как одинарные */
@@ -74,14 +75,6 @@ td, th {
 	border: 1px solid #999;
 	background: #ffffff;
 	margin-bottom: 10px;
-}
-.fl_img {
-	float: left;
-	margin: 3px 30px 15px 0;
-}
-.fr_img {
-	float: right;
-	margin: 3px 0 15px 30px;
 }
 
 blockquote { font-style: italic; margin-left: 10px;}
@@ -161,6 +154,35 @@ em { color: #5d6d1e; }
 	margin: 0 10px 0 100px;
 	padding: 20px 30px 0 0;
 	background: url(images/templatemo_menu.png) top repeat-x;
+}
+
+#templatemo_greeting a{
+	color: #e4decd;
+	padding: 0;
+	margin: 0 5px 0 30;
+	font-size: 15px;
+	text-align: left;
+	text-decoration: none;
+	font-weight: bold;
+	outline: none;
+	border: none;
+}
+
+#templatemo_greeting a:hover {
+	color: #fbb400;
+}
+
+#templatemo_search{
+	color: #e4decd;
+	padding: 0;
+	margin: -19 5px 0 250;
+	font-size: 15px;
+	text-align: center;
+	text-decoration: none;
+	font-weight: bold;
+	outline: none;
+	border: none;
+	display:block;
 }
 
 #templatemo_menu ul {
@@ -255,14 +277,6 @@ em { color: #5d6d1e; }
 	margin-top: 20px;
 }
 
-#featured_project {
-	float: right;
-	width: 520px;
-	height: 210px;
-	padding: 33px 0;
-	background: url(images/templatemo_featured_project.png) no-repeat;
-}
-
 #templatemo_sidebar {
 	clear: both;
 	float: left;
@@ -310,101 +324,6 @@ em { color: #5d6d1e; }
 	font-weight: bold;
 }
 
-
-#templatemo_rss a {
-	float: right;
-	display: block;
-	width: 190px;
-	height: 40px;
-	padding: 10px 0 10px 60px;
-	margin-bottom: 30px;
-	color: #ffa200;
-	font-size: 16px;
-	font-weight: bold;
-	text-decoration: none;
-	background: url(images/templatemo_rss.png) left center no-repeat;
-}
-
-#templatemo_header #templatemo_rss a:hover {
-	color: #fff;
-	text-decoration: none;
-}
-
-#templatemo_rss a span {
-	font-size: 12px;
-	margin-top: 5px;
-	letter-spacing: 3px;
-}
-
-
-.service_box {
-	margin-bottom: 40px;
-}
-
-.service_box .left {
-	float: left;
-	width: 120px;
-	height: 120px;
-}
-
-.service_box .left img {
-	width: 120px;
-	height: 120px;
-}
-
-.service_box .right {
-	float: right;
-	width: 360px;
-}
-
-.service_box ol li {
-	list-style: decimal-leading-zero;
-	margin-bottom: 5px;
-}
-
-.service_box ol li a {
-	color: #058edc;
-}
-
-/* gallery */
-#gallery {
-	clear: both;
-	}
-
-	#gallery a {
-		border: none;
-	}
-	#gallery ul { list-style: none; margin: 0; padding: 0; }
-	#gallery ul li {
-		padding: 0;
-		margin: 0 0 40px 0;
-		padding-bottom: 30px;
-		border-bottom: 1px solid #CCC;
-	}
-
-	#gallery ul li .left {
-		float: left;
-		width: 190px;
-	}
-
-	#gallery ul li .left img {
-		width: 180px;
-		height: 110px;
-		border: none;
-		border: 5px solid #d4cbaf;
-	}
-
-	#gallery ul li .right {
-		float: right;
-		width: 280px;
-	}
-
-	#gallery ul li .right button {
-		margin: 0;
-	}
-
-/* end of gallery */
-
 #contact_form form {
 	margin: 0px;
 	padding: 0px;
@@ -432,12 +351,22 @@ em { color: #5d6d1e; }
 }
 
 #contact_form form .submit_btn {
-	margin-left: 150px;
+	margin-left: 55px;
 	padding: 5px 10px;
 	background: #EEEEEE;
 	border: 1px solid #AAAAAA;
 	color: #666666;
 }
+
+#contact_form form .submit_btn:hover {
+	color: #000000;
+	text-decoration: none;
+}
+
+#contact_form a {
+	text-decoration: underline;
+}
+
 
 /* footer */
 
@@ -445,21 +374,9 @@ em { color: #5d6d1e; }
 	clear: both;
 	width: 860px;
 	height: 50px;
-	margin: 0 10px 0 100px;
+	margin: 20 10px 0 100px;
 	padding: 30px 0 0 0;
 	text-align: center;
 	color: #FFFFFF;
 	background: url(images/templatemo_footer.png) top repeat-x;
-}
-
-#templatemo_footer a {
-	color: #FFFFFF;
-}
-
-.profile img {
-	margin-right: 50px
-}
-
-.profile td {
-	height: 25px;
 }

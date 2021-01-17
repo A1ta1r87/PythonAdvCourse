@@ -19,10 +19,10 @@
                             <tr>
                                 <th></th>
                                 <th>Id</th>
-                                <th>Title</th>
-                                <th>Author</th>
-                                <th>Year</th>
-                                <th>Reader</th>
+                                <th>Название</th>
+                                <th>Автор</th>
+                                <th>Год</th>
+                                <th>Читатель</th>
                             </tr>
                             {% for i, book in books.items() %}
                                 <tr>
@@ -40,7 +40,8 @@
                         <div class="cleaner_h10"></div>
                         <div class="cleaner_h10"></div>
 
-                        <input type="submit" class="submit_btn" name="submit" id="submit" value="Подтвердить" />
+                        <input type="submit" class="submit_btn" name="submit" id="submit" value="Удалить" />
+                        <input type="reset" class="submit_btn" name="reset" id="reset" value="Очистить" />
                     </form>
                 {% else %}
                     <p><b>Все книги удалены!</b></p>

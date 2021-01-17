@@ -9,10 +9,27 @@
     <div id="templatemo_wrapper">
         <div id="templatemo_menu">
             <ul>
-                <li><a href="register.html">Регистрация</a></li>
-                <li><a href="auth.html">Авторизация</a></li>
-                <li><a href="contact.html">О нас</a></li>
+                {% if current_user.is_authenticated %}
+                    <li><a href="logout">Выйти</a></li>
+                {% else %}
+                    <li><a href="register">Регистрация</a></li>
+                    <li><a href="auth">Авторизация</a></li>
+                {% endif %}
             </ul>
+            <div id="templatemo_greeting">
+                {% if current_user.is_authenticated %}
+                <a href="index">Добро пожаловать, <h7>{{current_user.name}}</h7>!</a>
+                {% else %}
+                <a href="register">Добро пожаловать, гость!</a>
+                {% endif %}
+            </div >
+            <div id="templatemo_search">
+                <form method="post">
+                    <label for="book_search">Найти книгу:</label>
+                    <input type="search" id="book_search" name="book_search">
+                    <input type="submit" value="Поиск">
+                </form>
+            </div >
         </div>
 
         <div id="templatemo_left_column">

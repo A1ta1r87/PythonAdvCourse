@@ -2,20 +2,19 @@
 {% block content %}
  <div id="templatemo_right_column">
         <div id="templatemo_main">
-            {% if message %}
-            <p><b>{{ message }}</b></p>
-            {% endif %}
             <div class="cleaner_h10"></div>
-            <h1>Книги библиотеки</h1>
+             {% if message %}
+                <p><b>{{ message }}</b></p>
+            {% endif %}
 
             <div id="contact_form">
                 {% if books %}
                     <table>
                         <tr>
-                            <td><center><b><a href="{{path}}?sort=id">Id&#8595;</a></b></center></td>
-                            <td><center><b><a href="{{path}}?sort=title">Название&#8595;</a></b></center></td>
-                            <td><center><b><a href="{{path}}?sort=author">Автор&#8595;</a></b></center></td>
-                            <td><center><b><a href="{{path}}?sort=year">Год&#8595;</a></b></center></td>
+                            <td><center><b><a href="{{path}}&sort=id">Id&#8595;</a></b></center></td>
+                            <td><center><b><a href="{{path}}&sort=title">Название&#8595;</a></b></center></td>
+                            <td><center><b><a href="{{path}}&sort=author">Автор&#8595;</a></b></center></td>
+                            <td><center><b><a href="{{path}}&sort=year">Год&#8595;</a></b></center></td>
                             <td><center><b>Читатель</b></center></td>
                         </tr>
                         {% for i, book in books.items() %}
@@ -26,13 +25,14 @@
                                 <td><center>{{book.year}}</center></td>
                                 <td>{{book.reader_field()}}</td>
                             </tr>
+
                         {% endfor %}
                     </table>
 
                     <div class="cleaner_h10"></div>
                     <div class="cleaner_h10"></div>
                 {% else %}
-                    <p><b>Книг еще нет.</b></p>
+                <p><b><a href="books">Показать все книги</a></b></p>
                 {% endif %}
             </div>
         </div>
